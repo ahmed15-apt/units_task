@@ -159,4 +159,4 @@ Units_Task/
 
 Internet access for private workloads
 ```
-![Architecture](architecture.jpg)
+<img src="architecture.png" width="900">
