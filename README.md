@@ -80,8 +80,8 @@ Used for:
 ## 1. Clone Repository
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/YOUR_REPO.git
-cd YOUR_REPO
+git clone https://github.com/ahmed15-apt/units_task.git
+cd units_task
 ```
 
 ---
@@ -142,7 +142,7 @@ cd ../backend
 Build image:
 
 ```bash
-docker build -t yourdockerhubusername/posts-api:v1 .
+docker build -t ahmed154/posts-api:v1 .
 ```
 
 Login to DockerHub:
@@ -154,7 +154,7 @@ docker login
 Push image:
 
 ```bash
-docker push yourdockerhubusername/posts-api:v1
+docker push ahmed154/posts-api:v1
 ```
 
 ---
