@@ -15,7 +15,7 @@ The project demonstrates:
 
 # Architecture
 
-<img src="images/architecture.png" width="1000">
+<img src="images/architecture.jpg" width="1000">
 
 ---
 
@@ -393,9 +393,3 @@ Units_Task/
 
 ---
 
-# Author
-
-Ahmed Ibrahim
-
-```
-```
