@@ -113,7 +113,7 @@ Terraform creates:
 ## API testing
 
 You can test the API with `curl` or Postman.
-
+<INGRESS_URL> = k8s-default-backendi-4004ae3b3b-298464302.us-east-1.elb.amazonaws.com
 ### Create
 
 ```bash
