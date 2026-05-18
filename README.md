@@ -114,11 +114,10 @@ Terraform creates:
 
 You can test the API with `curl` or Postman.
 
-<INGRESS_URL> = k8s-default-backendi-4004ae3b3b-298464302.us-east-1.elb.amazonaws.com
 ### Create
 
 ```bash
-curl -X POST http://<INGRESS_URL>/posts \
+curl -X POST http://k8s-default-backendi-4004ae3b3b-298464302.us-east-1.elb.amazonaws.com/posts \
   -H "Content-Type: application/json" \
   -d '{"title":"First Post","content":"Hello"}'
 ```
@@ -126,22 +125,10 @@ curl -X POST http://<INGRESS_URL>/posts \
 ### Read
 
 ```bash
-curl http://<INGRESS_URL>/posts
+curl http://k8s-default-backendi-4004ae3b3b-298464302.us-east-1.elb.amazonaws.com/posts
 ```
 
-### Update
 
-```bash
-curl -X PUT http://<INGRESS_URL>/posts/<POST_ID> \
-  -H "Content-Type: application/json" \
-  -d '{"title":"Updated","content":"Updated content"}'
-```
-
-### Delete
-
-```bash
-curl -X DELETE http://<INGRESS_URL>/posts/<POST_ID>
-```
 
 ## What to show in the demo
 
