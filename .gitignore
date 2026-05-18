@@ -6,23 +6,19 @@ npm-debug.log
 .terraform/
 *.tfstate
 *.tfstate.*
-crash.log
 terraform.tfvars
 tfplan
 
-# Kubernetes
-kubeconfig
+# Logs
+*.log
 
 # Environment files
 .env
-
-# Logs
-*.log
 
 # IDE
 .vscode/
 .idea/
 
-# OS files
+# OS
 .DS_Store
 Thumbs.db
