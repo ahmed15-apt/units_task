@@ -157,35 +157,5 @@ Units_Task/
 
 ## Final architecture
 
-```text
-Internet
-   |
-   v
-Internet Gateway
-   |
-   v
-Application Load Balancer
-   |
-   v
-Kubernetes Ingress
-   |
-   v
-backend-service (ClusterIP)
-   |
-   v
-Backend Deployment (1-5 pods with HPA)
-   |
-   v
-MongoDB StatefulSet (3 pods replica set)
-```
-
-```text
-AWS VPC
-├── Public Subnets
-│   └── ALB / Ingress traffic
-├── Private Subnets
-│   ├── EKS worker nodes
-│   └── MongoDB pods
-└── NAT Gateway
-    └── Internet access for private workloads
+Internet access for private workloads
 ```
