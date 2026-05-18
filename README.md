@@ -1,4 +1,4 @@
-````md
+
 # AWS EKS CRUD API with MongoDB Replica Set
 
 This project is a CRUD backend application deployed on AWS EKS using Kubernetes, MongoDB StatefulSet, Terraform, and AWS ALB Ingress.
@@ -38,7 +38,7 @@ Users → Internet → Internet Gateway → Application Load Balancer → Ingres
 - AWS ALB Ingress Controller
 - Horizontal Pod Autoscaler (HPA)
 
----
+
 
 # AWS Networking
 
@@ -63,8 +63,8 @@ Used for:
 ## Private Subnets
 
 ```text
-10.0.3.0/24
-10.0.4.0/24
+10.0.101.0/24
+10.0.102.0/24
 ```
 
 Used for:
