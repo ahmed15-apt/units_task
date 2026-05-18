@@ -158,5 +158,5 @@ Units_Task/
 ## Final architecture
 
 Internet access for private workloads
-```
-<img src="architecture.jpg" width="900">
+
+<img src="/architecture.jpg" width="900">
