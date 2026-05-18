@@ -1,59 +1,52 @@
+````md
 # AWS EKS CRUD API with MongoDB Replica Set
 
-A cloud-native backend application deployed on Amazon EKS using Kubernetes, MongoDB StatefulSet, Horizontal Pod Autoscaler (HPA), AWS ALB Ingress Controller, and Terraform infrastructure provisioning.
+This project is a CRUD backend application deployed on AWS EKS using Kubernetes, MongoDB StatefulSet, Terraform, and AWS ALB Ingress.
 
----
-
-# Project Overview
-
-This project demonstrates a production-style Kubernetes deployment on AWS using:
-
-* Amazon EKS
-* Terraform Infrastructure as Code
-* MongoDB Replica Set with StatefulSet
-* Persistent Storage using AWS EBS
-* Node.js CRUD API
-* Kubernetes Ingress with AWS ALB
-* Horizontal Pod Autoscaling
-* High Availability and Self-Healing
+The project demonstrates:
+- Kubernetes deployments
+- MongoDB replica set
+- Persistent storage using EBS
+- Horizontal Pod Autoscaler (HPA)
+- High availability and self-healing
+- Infrastructure provisioning using Terraform
 
 ---
 
 # Architecture
 
-<img src="images/architecture.jpg" width="1000">
+<img src="images/architecture.png" width="1000">
 
 ---
 
 # Architecture Flow
 
-```text
-Users
-   ↓
-Internet
-   ↓
-Internet Gateway (IGW)
-   ↓
-Application Load Balancer (Public Subnets)
-   ↓
-Ingress
-   ↓
-ClusterIP Service
-   ↓
-Backend Pods
-   ↓
-MongoDB Replica Set
-```
+Users → Internet → Internet Gateway → Application Load Balancer → Ingress → ClusterIP Service → Backend Pods → MongoDB Replica Set
 
 ---
 
-# AWS Infrastructure
+# Technologies Used
 
-## VPC
+- AWS EKS
+- Terraform
+- Docker
+- Kubernetes
+- MongoDB
+- Node.js
+- Express.js
+- AWS EBS
+- AWS ALB Ingress Controller
+- Horizontal Pod Autoscaler (HPA)
+
+---
+
+# AWS Networking
+
+## VPC CIDR
 
 ```text
 10.0.0.0/16
-```
+````
 
 ## Public Subnets
 
@@ -70,179 +63,159 @@ Used for:
 ## Private Subnets
 
 ```text
-10.0.101.0/24
-10.0.102.0/24
+10.0.3.0/24
+10.0.4.0/24
 ```
 
 Used for:
 
 * EKS Worker Nodes
 * Backend Pods
-* MongoDB StatefulSet
+* MongoDB Replica Set
 
 ---
 
-# Technologies Used
+# Setup Steps
 
-| Technology  | Purpose                       |
-| ----------- | ----------------------------- |
-| AWS EKS     | Kubernetes Cluster            |
-| Terraform   | Infrastructure Provisioning   |
-| Docker      | Containerization              |
-| Kubernetes  | Container Orchestration       |
-| MongoDB     | Database                      |
-| StatefulSet | Persistent MongoDB Deployment |
-| AWS EBS     | Persistent Storage            |
-| HPA         | Auto Scaling                  |
-| ALB Ingress | External Access               |
-| Node.js     | Backend API                   |
-| Express.js  | REST API                      |
+## 1. Clone Repository
 
----
-
-# MongoDB Architecture
-
-MongoDB is deployed as a Replica Set using StatefulSet.
-
-## Replica Set Members
-
-```text
-mongo-0 → PRIMARY
-mongo-1 → SECONDARY
-mongo-2 → SECONDARY
-```
-
-## Features
-
-* Persistent Storage using EBS
-* Stable Network Identity
-* Automatic Pod Recreation
-* High Availability
-* Data Replication
-
----
-
-# Horizontal Pod Autoscaler
-
-The backend deployment scales automatically based on CPU utilization.
-
-## HPA Configuration
-
-```text
-Min Replicas: 1
-Max Replicas: 5
-Target CPU: 70%
+```bash
+git clone https://github.com/YOUR_USERNAME/YOUR_REPO.git
+cd YOUR_REPO
 ```
 
 ---
 
-# Backend API Endpoints
+## 2. Create Infrastructure Using Terraform
 
-## Create dataset
+Go to infrastructure folder:
 
-```http
-POST /posts
+```bash
+cd infra
 ```
 
-Example:
-
-```json
-{
-  "title": "Test",
-  "content": "Hello from EKS"
-}
-```
-
----
-
-## Get All datasets
-
-```http
-GET /posts
-```
-
----
-
-## Update dataset
-
-```http
-PUT /posts/:id
-```
-
----
-
-## Delete dataset
-
-```http
-DELETE /posts/:id
-```
-
----
-
-# Deploy Infrastructure
-
-## Initialize Terraform
+Initialize Terraform:
 
 ```bash
 terraform init
 ```
 
-## Apply Infrastructure
+Apply infrastructure:
 
 ```bash
 terraform apply -auto-approve
 ```
 
+This creates:
+
+* VPC
+* Public and private subnets
+* Internet Gateway
+* NAT Gateway
+* EKS Cluster
+* Worker Nodes
+
 ---
 
-# Build Docker Image
+## 3. Configure kubectl
 
 ```bash
-docker build -t your-dockerhub-username/backend:v1 .
+aws eks update-kubeconfig --region us-east-1 --name posts-eks
+```
+
+Verify nodes:
+
+```bash
+kubectl get nodes
 ```
 
 ---
 
-# Push Docker Image
+## 4. Build Docker Image
+
+Go to backend folder:
 
 ```bash
-docker push your-dockerhub-username/backend:v1
+cd ../backend
+```
+
+Build image:
+
+```bash
+docker build -t yourdockerhubusername/posts-api:v1 .
+```
+
+Login to DockerHub:
+
+```bash
+docker login
+```
+
+Push image:
+
+```bash
+docker push yourdockerhubusername/posts-api:v1
 ```
 
 ---
 
-# Deploy Kubernetes Resources
+## 5. Deploy MongoDB
+
+Apply MongoDB StatefulSet:
 
 ```bash
 kubectl apply -f mongo.yaml
-kubectl apply -f backend.yaml
-kubectl apply -f ingress.yaml
-kubectl apply -f hpa.yaml
 ```
 
----
-
-# Verify Resources
-
-## Check Pods
+Verify MongoDB pods:
 
 ```bash
 kubectl get pods
 ```
 
-## Check Services
+---
+
+## 6. Deploy Backend
+
+Apply backend deployment and service:
 
 ```bash
-kubectl get svc
+kubectl apply -f backend.yaml
 ```
 
-## Check Ingress
+Verify backend pods:
+
+```bash
+kubectl get pods
+```
+
+---
+
+## 7. Deploy Ingress
+
+Apply ingress resource:
+
+```bash
+kubectl apply -f ingress.yaml
+```
+
+Get ALB DNS:
 
 ```bash
 kubectl get ingress
 ```
 
-## Check HPA
+---
+
+## 8. Deploy Horizontal Pod Autoscaler
+
+Apply HPA:
+
+```bash
+kubectl apply -f hpa.yaml
+```
+
+Verify HPA:
 
 ```bash
 kubectl get hpa
@@ -250,13 +223,91 @@ kubectl get hpa
 
 ---
 
+# API Base URL
+
+```text
+http://k8s-default-backendi-4004ae3b3b-298464302.us-east-1.elb.amazonaws.com
+```
+
+---
+
+# API Endpoints
+
+## Get All Posts
+
+### Endpoint
+
+```http
+GET /posts
+```
+
+### curl
+
+```bash
+curl http://k8s-default-backendi-4004ae3b3b-298464302.us-east-1.elb.amazonaws.com/posts
+```
+
+---
+
+## Create Post
+
+### Endpoint
+
+```http
+POST /posts
+```
+
+### curl
+
+```bash
+curl -X POST http://k8s-default-backendi-4004ae3b3b-298464302.us-east-1.elb.amazonaws.com/posts \
+-H "Content-Type: application/json" \
+-d '{"title":"First Post","content":"Hello from EKS"}'
+```
+
+---
+
+## Update Post
+
+### Endpoint
+
+```http
+PUT /posts/:id
+```
+
+### curl
+
+```bash
+curl -X PUT http://k8s-default-backendi-4004ae3b3b-298464302.us-east-1.elb.amazonaws.com/posts/POST_ID \
+-H "Content-Type: application/json" \
+-d '{"title":"Updated Post","content":"Updated content"}'
+```
+
+---
+
+## Delete Post
+
+### Endpoint
+
+```http
+DELETE /posts/:id
+```
+
+### curl
+
+```bash
+curl -X DELETE http://k8s-default-backendi-4004ae3b3b-298464302.us-east-1.elb.amazonaws.com/posts/POST_ID
+```
+
+---
+
 # Autoscaling Test
-My ALB_DNS = k8s-default-backendi-4004ae3b3b-298464302.us-east-1.elb.amazonaws.com
-Generate load using:
+
+Generate load:
 
 ```bash
 while true; do
-  hey -n 1000 -c 50 http://ALB_DNS/posts
+  hey -n 1000 -c 50 http://k8s-default-backendi-4004ae3b3b-298464302.us-east-1.elb.amazonaws.com/posts
   sleep 2
 done
 ```
@@ -271,23 +322,48 @@ watch -n 1 kubectl get pods -l app=backend
 
 # High Availability Test
 
-## Backend Self-Healing
+Delete backend pod:
 
 ```bash
-kubectl delete pod <backend-pod>
+kubectl delete pod <backend-pod-name>
 ```
 
-Kubernetes automatically recreates the pod.
-
----
-
-## MongoDB Self-Healing
+Delete MongoDB pod:
 
 ```bash
 kubectl delete pod mongo-1
 ```
 
-StatefulSet recreates the pod while preserving data using EBS volumes.
+---
+
+# MongoDB Replica Set
+
+MongoDB is deployed using StatefulSet with 3 replicas:
+
+```text
+mongo-0 → PRIMARY
+mongo-1 → SECONDARY
+mongo-2 → SECONDARY
+```
+
+Features:
+
+* Persistent storage using EBS
+* Automatic pod recovery
+* Data replication
+* Stable network identity
+
+---
+
+# Horizontal Pod Autoscaler
+
+HPA Configuration:
+
+```text
+Min Replicas: 1
+Max Replicas: 5
+CPU Target: 70%
+```
 
 ---
 
@@ -296,50 +372,30 @@ StatefulSet recreates the pod while preserving data using EBS volumes.
 ```text
 Units_Task/
 ├── backend/
-│   ├── Dockerfile
-│   ├── package.json
-│   └── server.js
-│
 ├── infra/
-│   ├── main.tf
-│   ├── variables.tf
-│   └── outputs.tf
-│
 ├── k8s/
-│   ├── mongo.yaml
-│   ├── backend.yaml
-│   ├── ingress.yaml
-│   └── hpa.yaml
-│
 ├── images/
-│   └── architecture.png
-│
 ├── README.md
 └── .gitignore
 ```
 
 ---
 
-# Key Features
+# Features
 
-* Multi-AZ Deployment
 * Kubernetes Self-Healing
 * Horizontal Auto Scaling
-* Persistent Storage
 * MongoDB Replica Set
-* Infrastructure as Code
+* Persistent Storage using EBS
+* AWS ALB Ingress
+* Infrastructure as Code using Terraform
 * Production-Style Networking
-* ALB Ingress Routing
 
 ---
 
-# Future Improvements
+# Author
 
-* HTTPS with ACM
-* Monitoring using Prometheus & Grafana
-* CI/CD Pipeline using GitHub Actions
-* ArgoCD GitOps Deployment
-* Helm Charts
-* Secrets Management
+Ahmed Ibrahim
 
----
+```
+```
