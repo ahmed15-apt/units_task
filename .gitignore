@@ -1,0 +1,28 @@
+# Node.js
+node_modules/
+npm-debug.log
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+crash.log
+terraform.tfvars
+tfplan
+
+# Kubernetes
+kubeconfig
+
+# Environment files
+.env
+
+# Logs
+*.log
+
+# IDE
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
