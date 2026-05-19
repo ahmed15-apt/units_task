@@ -15,7 +15,7 @@ The project demonstrates:
 
 # Architecture
 
-<img src="architecture.jpg" width="900">
+<img src="/images/architecture.jpg" width="900">
 
 ---
 
